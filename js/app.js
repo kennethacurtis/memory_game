@@ -2,6 +2,7 @@
  * Create a list that holds all of your cards
  */
 
+var symbols = ['fa fa-diamond', 'fa fa-paper-plane-o', 'fa fa-anchor', 'fa fa-bolt', 'fa fa-cube', 'fa fa-leaf', 'fa fa-bicycle', 'fa fa-bomb']
 
 /*
  * Display the cards on the page
@@ -25,7 +26,22 @@ function shuffle(array) {
     return array;
 }
 
+function startGame () {
+  cards = shuffle(symbols);
+  index = 0;
+  for (var x=0, x<16, x++) {
+    list = $('.deck').append(
+      '<li class="card"></li>'
+    );
+    item = $('.card').append(
+      '<i class =' + symbols[index] + '></i>'
+    );
+    index = index + 1;
+  }
+  return list + item
+};
 
+startGame();
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
