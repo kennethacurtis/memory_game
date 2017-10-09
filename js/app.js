@@ -1,8 +1,7 @@
 /*
  * Create a list that holds all of your cards
  */
-
-var symbols = ['fa fa-diamond', 'fa fa-paper-plane-o', 'fa fa-anchor', 'fa fa-bolt', 'fa fa-cube', 'fa fa-leaf', 'fa fa-bicycle', 'fa fa-bomb']
+var icons = ['diamond', 'paper-plane-o', 'anchor', 'bolt', 'cube', 'leaf', 'bicycle', 'diamond', 'bomb', 'leaf', 'bomb', 'bolt', 'bicycle', 'paper-plane-o', 'cube']
 
 /*
  * Display the cards on the page
@@ -26,22 +25,36 @@ function shuffle(array) {
     return array;
 }
 
-function startGame () {
-  cards = shuffle(symbols);
-  index = 0;
-  for (var x=0, x<16, x++) {
-    list = $('.deck').append(
-      '<li class="card"></li>'
-    );
-    item = $('.card').append(
-      '<i class =' + symbols[index] + '></i>'
-    );
-    index = index + 1;
+function beginGame() {
+  var cards = shuffle(icons);
+  $('.deck').empty();
+  game = 0;
+  moves = 0;
+  $('moves').text('0');
+  for (var x=0; x<16; x++) {
+    $('.deck').append($('<li class="card"><i class= "fa fa-' + icons[x] + '"' + '></i></li>'))
   }
-  return list + item
-};
+  cardEventListener();
+}
 
-startGame();
+$('.restart').bind('click', function() {
+  swal({
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    title: 'Are you sure?',
+    text: "Your progress will be Lost!",
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#02ccba',
+    cancelButtonColor: '#f95c3c',
+    confirmButtonText: 'Yes, Restart Game!'
+  }).then(function(isConfirm) {
+    if (isConfirm) {
+      beginGame();
+    }
+  })
+});
+
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
@@ -52,3 +65,14 @@ startGame();
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
+function cardEventListener() {
+  $('.card').click(function() {
+    $(this).addClass('open show');
+  })
+};
+
+
+
+
+beginGame();

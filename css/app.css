@@ -63,10 +63,24 @@ h1 {
     justify-content: center;
     align-items: center;
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+    -webkit-transition: -webkit-transform 0.4s;
+    -moz-transition: -moz-transform 0.4s;
+    -o-transition: -o-transform 0.4s;
+    transition: transform 0.4s;
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -o-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-transform: rotateY(180deg);
+            transform: rotateY(180deg);
+    font-family: FontAwesome;
 }
 
 .deck .card.open {
-    transform: rotateY(0);
+    -webkit-transform: rotateY( 0 );
+    -moz-transform: rotateY( 0 );
+    -o-transform: rotateY( 0 );
+    transform: rotateY( 0 );
     background: #02b3e4;
     cursor: default;
 }
@@ -76,6 +90,8 @@ h1 {
 }
 
 .deck .card.match {
+  -webkit-transform: rotateY(0);
+          transform: rotateY(0);
     cursor: default;
     background: #02ccba;
     font-size: 33px;
