@@ -1,9 +1,10 @@
 /*
  * Create a list that holds all of your cards
  */
-var icons = ['diamond', 'paper-plane-o', 'anchor', 'bolt', 'cube', 'leaf', 'bicycle', 'diamond', 'bomb', 'leaf', 'bomb', 'bolt', 'bicycle', 'paper-plane-o', 'cube']
+var icons = ['diamond', 'paper-plane-o', 'anchor', 'bolt', 'cube', 'leaf', 'bicycle', 'diamond', 'bomb', 'leaf', 'bomb', 'bolt', 'bicycle', 'paper-plane-o', 'cube', 'anchor']
 var opened = []
 var matched = []
+var moves = 0
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -28,11 +29,11 @@ function shuffle(array) {
 
 
 function beginGame() {
+  opened.length = 0;
+  matched.length = 0;
   var cards = shuffle(icons);
   $('.deck').empty();
-  game = 0;
-  moves = 0;
-  $('moves').text('0');
+  $('.moves').text('0');
   for (var x=0; x<16; x++) {
     $('.deck').append($('<li class="card"><i class= "fa fa-' + icons[x] + '"' + '></i></li>'))
   }
@@ -44,12 +45,15 @@ function beginGame() {
 function matchChecker() {
   if (opened.length > 1) {
     if (opened[0] === opened[1]) {
+      console.log('made it here');
       $('open show').addClass('animated rubberBand');
       var changeList = opened.splice(0,2);
       matched.push(changeList);
+      cardEventListener();
     }
     else {
       $('.card').children('i').removeClass('open show');
+      cardEventListener();
     }
   }
 };
@@ -88,8 +92,10 @@ function cardEventListener() {
     $(this).addClass('open show');
     var clickedClass = $(this).children('i').attr("class");
     opened.push(clickedClass)
+    if (opened.length > 1) {
+      matchChecker();
+    }
   })
-  matchChecker();
 };
 
 
