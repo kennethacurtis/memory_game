@@ -4,7 +4,8 @@
 var icons = ['diamond', 'paper-plane-o', 'anchor', 'bolt', 'cube', 'leaf', 'bicycle', 'diamond', 'bomb', 'leaf', 'bomb', 'bolt', 'bicycle', 'paper-plane-o', 'cube', 'anchor']
 var opened = []
 var matched = []
-var moves = 0
+var deck = $('.deck')
+
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -41,22 +42,41 @@ function beginGame() {
 };
 
 
+function complete() {
+  swal({
+		allowEscapeKey: false,
+		allowOutsideClick: false,
+		title: 'You win!',
+		text: 'Give it another try!',
+		type: 'success',
+		confirmButtonColor: '#02ccba',
+		confirmButtonText: 'Play again!'
+	}).then(function(isConfirm) {
+		if (isConfirm) {
+			beginGame();
+		}
+	})
+};
+
 
 function matchChecker() {
   if (opened.length > 1) {
-    if (opened[0] === opened[1]) {
-      console.log('made it here');
-      $('open show').addClass('animated rubberBand');
-      var changeList = opened.splice(0,2);
-      matched.push(changeList);
-      cardEventListener();
+    if (opened[0] === opened[1]){
+      setTimeout(function() {
+        deck.find('.open').addClass('match animated rubberBand');
+        var changeList = opened.splice(0,2);
+        matched.push(changeList);
+      }, 500);
     }
     else {
-      $('.card').children('i').removeClass('open show');
-      cardEventListener();
+      setTimeout(function() {
+        deck.find('.open').removeClass('open show');
+        opened.length = 0;
+      }, 500);
     }
   }
 };
+
 
 $('.restart').bind('click', function() {
   swal({
@@ -89,6 +109,9 @@ $('.restart').bind('click', function() {
 
 function cardEventListener() {
   $('.card').click(function() {
+    if (matched.length === 8) {
+      complete();
+    }
     $(this).addClass('open show');
     var clickedClass = $(this).children('i').attr("class");
     opened.push(clickedClass)
