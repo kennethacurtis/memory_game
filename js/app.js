@@ -44,36 +44,37 @@ function beginGame() {
 
 function complete() {
   swal({
-		allowEscapeKey: false,
-		allowOutsideClick: false,
-		title: 'You win!',
-		text: 'Give it another try!',
-		type: 'success',
-		confirmButtonColor: '#02ccba',
-		confirmButtonText: 'Play again!'
-	}).then(function(isConfirm) {
-		if (isConfirm) {
-			beginGame();
-		}
-	})
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    title: 'You win!',
+    text: 'Give it another try!',
+    type: 'success',
+    confirmButtonColor: '#02ccba',
+    confirmButtonText: 'Play again!'
+  }).then(function(isConfirm) {
+    if (isConfirm) {
+      beginGame();
+    }
+  })
 };
 
 
 function matchChecker() {
-  if (opened.length > 1) {
-    if (opened[0] === opened[1]){
-      setTimeout(function() {
-        deck.find('.open').addClass('match animated rubberBand');
-        var changeList = opened.splice(0,2);
-        matched.push(changeList);
-      }, 500);
-    }
-    else {
-      setTimeout(function() {
-        deck.find('.open').removeClass('open show');
-        opened.length = 0;
-      }, 500);
-    }
+  if (opened[0] === opened[1]){
+    setTimeout(function() {
+      deck.find('.open').addClass('match animated rubberBand');
+      var changeList = opened.splice(0,2);
+      matched.push(changeList);
+      if ($('.match').length === 16) {
+        complete();
+      }
+    }, 500);
+  }
+  else {
+    setTimeout(function() {
+      deck.find('.open').removeClass('open show');
+      opened.length = 0;
+    }, 500);
   }
 };
 
@@ -109,18 +110,14 @@ $('.restart').bind('click', function() {
 
 function cardEventListener() {
   $('.card').click(function() {
-    if (matched.length === 8) {
-      complete();
-    }
     $(this).addClass('open show');
     var clickedClass = $(this).children('i').attr("class");
-    opened.push(clickedClass)
+    opened.push(clickedClass);
     if (opened.length > 1) {
       matchChecker();
     }
   })
 };
-
 
 
 
