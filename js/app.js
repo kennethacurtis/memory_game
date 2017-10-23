@@ -1,17 +1,11 @@
-/*
- * Create a list that holds all of your cards
- */
+
 var icons = ['diamond', 'paper-plane-o', 'anchor', 'bolt', 'cube', 'leaf', 'bicycle', 'diamond', 'bomb', 'leaf', 'bomb', 'bolt', 'bicycle', 'paper-plane-o', 'cube', 'anchor']
 var opened = []
 var matched = []
-var deck = $('.deck')
+var deck = $('.deck');
 
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
+
+
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -29,6 +23,23 @@ function shuffle(array) {
 }
 
 
+var moveCounter = {
+  moves: 0 ,
+  increment: function() {
+    this.moves++
+  },
+  reset: function() {
+    this.moves = 0;
+  }
+};
+
+function timer() {
+  var start = new Date;
+  setInterval(function() {
+      $('.timer').text(Math.round((new Date - start) / 1000,0));
+  }, 1000);
+};
+
 function beginGame() {
   opened.length = 0;
   matched.length = 0;
@@ -38,6 +49,7 @@ function beginGame() {
   for (var x=0; x<16; x++) {
     $('.deck').append($('<li class="card"><i class= "fa fa-' + icons[x] + '"' + '></i></li>'))
   }
+  timer();
   cardEventListener();
 };
 
@@ -53,6 +65,8 @@ function complete() {
     confirmButtonText: 'Play again!'
   }).then(function(isConfirm) {
     if (isConfirm) {
+      ratingReset();
+      moveCounter.reset();
       beginGame();
     }
   })
@@ -84,41 +98,65 @@ $('.restart').bind('click', function() {
     allowEscapeKey: false,
     allowOutsideClick: false,
     title: 'Are you sure?',
-    text: "Your progress will be Lost!",
+    text: "Your progress will be lost!",
     type: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#02ccba',
     cancelButtonColor: '#f95c3c',
-    confirmButtonText: 'Yes, Restart Game!'
+    confirmButtonText: 'Yes, Restart Game'
   }).then(function(isConfirm) {
     if (isConfirm) {
+      ratingReset();
+      moveCounter.reset();
       beginGame();
     }
   })
 });
 
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
+
+function ratingTracker() {
+  if (moveCounter.moves >= 10) {
+    $("#star3").attr('class', 'fa fa-star-o');
+  }
+  if (moveCounter.moves >= 20) {
+    $("#star2").attr('class', 'fa fa-star-o');
+  }
+  if (moveCounter.moves >= 30) {
+    $("#star1").attr('class', 'fa fa-star-o');
+  }
+};
+
+
+function ratingReset() {
+  $('.stars').remove();
+  $('.moves').remove();
+  $('.Movestext').remove();
+  $('.score-panel').append($('<ul class="stars"></ul>'));
+  starnum = 1;
+  for (var x=0; x<3; x++) {
+    $('.stars').append($('<li><i id="star' + starnum + '"' + 'class="fa fa-star"></i></li>'))
+    starnum++;
+  };
+  $('.score-panel').append($('<span class="moves">0</span><p class="Movestext">Moves</p>'));
+};
+
 
 function cardEventListener() {
   $('.card').click(function() {
     $(this).addClass('open show');
     var clickedClass = $(this).children('i').attr("class");
     opened.push(clickedClass);
+    ratingTracker();
+    $('.moves').text(function(){
+      moves = moveCounter.moves;
+      moveCounter.increment();
+      return moves;
+    })
     if (opened.length > 1) {
       matchChecker();
     }
   })
 };
-
 
 
 beginGame();
