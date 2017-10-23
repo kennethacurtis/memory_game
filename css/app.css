@@ -122,4 +122,21 @@ h1 {
 .score-panel .restart {
     float: right;
     cursor: pointer;
+    padding: 20px;
+}
+
+.score-panel .Movestext {
+  padding: 0;
+  display: inline-block;
+  padding: 5px;
+}
+
+/*
+ * Styles for the timer
+ */
+
+.clock {
+  align-items: center;
+  text-align: center;
+  font-size: 200%
 }
