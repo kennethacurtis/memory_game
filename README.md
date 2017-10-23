@@ -6,7 +6,6 @@ This game was made for a [Udacity Project](https://review.udacity.com/#!/rubrics
 
 ## How to Play the Game
 
-- Play on github pages [here](https://kennethacurtis.github.io/memory_game/)
 - Clone the [repository](https://github.com/kennethacurtis/memory_game) and open the index.html file
 
 ## Features
