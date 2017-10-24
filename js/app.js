@@ -62,7 +62,7 @@ function cardEventListener() {
   //when a user clicks on card
   $('.card').click(function() {
     // add the class "open" and "show"
-    $(this).addClass('open show');
+    $(this).addClass('open show noclick');
     //stores the class name of card in the clickedClass variable
     var clickedClass = $(this).children('i').attr("class");
     //add class to opened array
@@ -122,7 +122,7 @@ function matchChecker() {
   else {
     //if the cards do not match, hide them
     setTimeout(function() {
-      deck.find('.open').removeClass('open show');
+      deck.find('.open').removeClass('open show noclick');
       opened.length = 0;
     }, 500);
   }
@@ -207,6 +207,7 @@ function ratingReset() {
   $('.stars').remove();
   $('.moves').remove();
   $('.Movestext').remove();
+  $('.timer').remove();
   //adds the stars back to the score panel
   $('.score-panel').append($('<ul class="stars"></ul>'));
   starnum = 1;
@@ -216,6 +217,7 @@ function ratingReset() {
   };
   //adds the moves number back to the score panel
   $('.score-panel').append($('<span class="moves">0</span><p class="Movestext">Moves</p>'));
+  $('.score-panel').append($('<span class="timer">0</span>'));
 };
 
 
@@ -232,10 +234,6 @@ function ratingTracker() {
   if (moveCounter.moves > 60) {
     $("#star2").attr('class', 'fa fa-star-o');
     stars = 1;
-  }
-  if (moveCounter.moves > 90) {
-    $("#star1").attr('class', 'fa fa-star-o');
-    stars = 0;
   }
 };
 
